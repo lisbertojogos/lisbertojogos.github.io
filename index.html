@@ -3,50 +3,481 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>LVR Games</title>
-  <meta name="description" content="Estúdio independente de jogos para celular. Criador de Sentinela: Defesa da Torre.">
+  <title>Sentinela: Defesa da Torre · LVR Games</title>
+  <meta name="description" content="Defenda a última torre do reino de Vel. Jogo de defesa idle em 3D para celular, com cartas, chefes, skins e companheiros. Novos heróis e pets das mitologias a caminho.">
+  <meta name="theme-color" content="#0a0c14">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Sentinela: Defesa da Torre">
+  <meta property="og:description" content="Só uma torre resiste. Novos heróis estão a caminho. Em breve no Google Play.">
+  <meta property="og:image" content="https://lisbertojogos.github.io/img/compartilhar.jpg">
+  <meta property="og:url" content="https://lisbertojogos.github.io/">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="img/sentinela.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg: #0a0c14; --bg2: #11141f; --card: #161a28; --linha: #262b3d;
+      --texto: #eef0f5; --suave: #aab0c0; --apagado: #747b8f;
+      --ouro1: #ffe082; --ouro2: #f5a623; --ouro3: #c2410c;
+      --raio: 18px;
+    }
     * { box-sizing: border-box; }
-    body { margin: 0; font: 16px/1.6 system-ui, "Segoe UI", Roboto, Arial, sans-serif; color: #f1f2f4; background: #07080b; }
-    a { color: #6aa6ff; }
-    main { max-width: 880px; margin: 0 auto; padding: 32px 16px 24px; }
-    .logo { display: block; width: min(360px, 80%); margin: 0 auto 8px; }
-    .intro { text-align: center; color: #c4c8d0; max-width: 560px; margin: 0 auto 32px; }
-    .jogo { display: flex; gap: 24px; align-items: center; background: #12151c; border: 1px solid #232838; border-radius: 16px; padding: 20px; }
-    .jogo img { flex: 0 0 128px; width: 128px; height: 128px; border-radius: 26px; }
-    .jogo h2 { margin: 0 0 4px; font-size: 22px; }
-    .jogo p { margin: 0 0 12px; color: #c4c8d0; }
-    .selo { display: inline-block; font-size: 13px; padding: 4px 10px; border-radius: 99px; background: #1f7bff22; color: #6aa6ff; border: 1px solid #1f7bff55; }
-    .links { margin-top: 12px; font-size: 14px; }
-    .links a { margin-right: 16px; }
-    .contato { text-align: center; margin-top: 32px; color: #c4c8d0; }
-    footer { text-align: center; margin-top: 24px; font-size: 13px; color: #7d8494; }
-    @media (max-width: 560px) {
-      .jogo { flex-direction: column; text-align: center; }
-      .links a { display: inline-block; margin: 4px 8px; }
+    html { scroll-behavior: smooth; overflow-x: clip; }
+    body { margin: 0; font: 16px/1.6 Nunito, system-ui, "Segoe UI", Roboto, Arial, sans-serif; color: var(--texto); background: var(--bg); overflow-x: clip; }
+    img { max-width: 100%; display: block; }
+    a { color: var(--ouro1); }
+    h1, h2, h3 { font-family: "Lilita One", "Arial Black", sans-serif; font-weight: 400; letter-spacing: .5px; line-height: 1.1; margin: 0; }
+    .ouro { background: linear-gradient(180deg, var(--ouro1) 15%, var(--ouro2) 60%, var(--ouro3)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+    section { padding: 72px 0; }
+    .kicker { display: inline-block; font-weight: 800; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: var(--ouro2); margin-bottom: 10px; }
+    .titulo { font-size: clamp(30px, 5vw, 46px); }
+    .lead { color: var(--suave); max-width: 640px; margin: 14px 0 0; font-size: 17px; }
+    .centro { text-align: center; }
+    .centro .lead { margin-left: auto; margin-right: auto; }
+
+    /* topo */
+    nav { position: fixed; inset: 0 0 auto 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 10px 16px; background: rgba(10,12,20,.78); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,.06); }
+    nav img { height: 34px; width: auto; }
+    nav ul { display: flex; gap: 18px; list-style: none; margin: 0; padding: 0; font-weight: 800; font-size: 14px; }
+    nav a { color: var(--texto); text-decoration: none; opacity: .85; }
+    nav a:hover { opacity: 1; color: var(--ouro1); }
+    .hero { position: relative; overflow: hidden; min-height: 100svh; display: grid; align-items: center; padding: 96px 0 56px; isolation: isolate; }
+    .hero::before { content: ""; position: absolute; inset: 0; z-index: -2; background: url(img/topo.webp) center 30% / cover no-repeat; filter: blur(18px) brightness(.45) saturate(1.2); transform: scale(1.1); }
+    .hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(ellipse at 70% 40%, transparent 30%, var(--bg) 85%), linear-gradient(180deg, transparent 70%, var(--bg)); }
+    .hero .wrap { display: grid; grid-template-columns: 1.1fr .9fr; gap: 40px; align-items: center; }
+    .logo-jogo { font-size: clamp(56px, 10vw, 104px); filter: drop-shadow(0 6px 0 #5a2a07) drop-shadow(0 12px 24px rgba(0,0,0,.6)); }
+    .slogan { font-size: clamp(16px, 2.4vw, 22px); letter-spacing: 4px; text-transform: uppercase; margin: 6px 0 18px; color: #f3e9d2; font-weight: 800; }
+    .hero p.historia { color: #d6d9e2; font-size: 18px; max-width: 520px; margin: 0 0 26px; }
+    .hero p.historia em { color: var(--ouro1); font-style: normal; font-weight: 800; }
+    .botoes { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 22px; border-radius: 99px; font-weight: 800; text-decoration: none; transition: transform .15s, box-shadow .15s; }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-ouro { color: #2b1503; background: linear-gradient(180deg, var(--ouro1), var(--ouro2)); box-shadow: 0 6px 0 #9a4a0b, 0 10px 30px rgba(245,166,35,.35); }
+    .btn-ouro:hover { box-shadow: 0 8px 0 #9a4a0b, 0 14px 36px rgba(245,166,35,.5); }
+    .btn-linha { color: var(--texto); border: 2px solid rgba(255,255,255,.25); background: rgba(255,255,255,.04); }
+    .selo { display: inline-flex; align-items: center; gap: 8px; margin-top: 22px; font-size: 14px; font-weight: 800; color: var(--suave); }
+    .selo i { width: 10px; height: 10px; border-radius: 50%; background: #3ddc84; box-shadow: 0 0 0 0 rgba(61,220,132,.7); animation: pulso 2s infinite; }
+    .poster { position: relative; justify-self: center; width: min(380px, 100%); }
+    .poster img { border-radius: 26px; box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.08); }
+    .poster::after { content: "Quem são eles?"; position: absolute; left: 50%; bottom: -14px; transform: translateX(-50%); white-space: nowrap; font: 15px "Lilita One", sans-serif; letter-spacing: 1px; color: #fff; background: #1b1530; border: 1px solid #b07cff88; padding: 6px 16px; border-radius: 99px; box-shadow: 0 0 24px #b07cff55; }
+
+    /* números */
+    .numeros { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+    .numeros li { background: var(--card); border: 1px solid var(--linha); border-radius: var(--raio); padding: 16px 8px; text-align: center; }
+    .numeros b { display: block; font: 34px "Lilita One", sans-serif; color: var(--ouro1); line-height: 1; }
+    .numeros span { font-size: 13px; color: var(--suave); font-weight: 600; }
+
+    /* o jogo */
+    .pilares { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 36px; }
+    .pilar { background: var(--card); border: 1px solid var(--linha); border-radius: var(--raio); padding: 22px; }
+    .pilar .ico { font-size: 30px; }
+    .pilar h3 { font-size: 22px; margin: 8px 0 6px; }
+    .pilar p { margin: 0; color: var(--suave); }
+    .telas { display: flex; gap: 18px; margin-top: 40px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 8px 4px 18px; scrollbar-width: thin; }
+    .telas figure:first-child { margin-left: auto; }
+    .telas figure:last-child { margin-right: auto; }
+    .telas figure { flex: 0 0 auto; width: min(230px, 62vw); margin: 0; scroll-snap-align: center; }
+    .telas img { border-radius: 28px; border: 6px solid #1e2232; box-shadow: 0 18px 40px rgba(0,0,0,.5); aspect-ratio: 9/16; object-fit: cover; }
+    .telas figcaption { text-align: center; margin-top: 10px; font-weight: 800; color: var(--suave); font-size: 14px; }
+
+    /* listas de cards */
+    .grade { list-style: none; margin: 36px 0 0; padding: 0; display: grid; gap: 16px; }
+    .comps { grid-template-columns: repeat(7, 1fr); }
+    .comp { text-align: center; background: radial-gradient(circle at 50% 35%, color-mix(in srgb, var(--r) 22%, transparent), var(--card) 70%); border: 1px solid var(--linha); border-top: 3px solid var(--r); border-radius: var(--raio); padding: 14px 8px; }
+    .comp img { width: 100%; height: auto; aspect-ratio: 1; object-fit: contain; transition: transform .25s; }
+    .comp:hover img { transform: translateY(-6px) scale(1.04); }
+    .comp b { display: block; font-size: 15px; margin-top: 6px; line-height: 1.2; }
+    .comp span { font-size: 12px; color: var(--r); font-weight: 800; }
+
+    .skins { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); }
+    .skin { background: var(--card); border: 1px solid var(--linha); border-radius: var(--raio); padding: 10px 10px 14px; text-align: center; }
+    .skin-img { position: relative; border-radius: 12px; overflow: hidden; box-shadow: inset 0 0 0 2px var(--r); }
+    .skin-img img { aspect-ratio: 3/4; object-fit: cover; width: 100%; transition: transform .3s; }
+    .skin:hover .skin-img img { transform: scale(1.06); }
+    .skin-img em { position: absolute; top: 8px; left: 8px; font-style: normal; font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 3px 8px; border-radius: 99px; color: #2b1503; background: var(--ouro1); }
+    .skin b { display: block; margin-top: 10px; font-size: 16px; line-height: 1.2; }
+    .skin .rar { display: block; font-size: 12px; font-weight: 800; color: var(--r); }
+    .skin small { display: block; color: var(--apagado); font-size: 12px; margin-top: 2px; }
+
+    /* mistério */
+    .secao-misterio { background: radial-gradient(ellipse at 50% 0%, #1d1535 0%, var(--bg) 70%); }
+    .herois { grid-template-columns: repeat(5, 1fr); }
+    .pets { grid-template-columns: repeat(6, 1fr); }
+    .misterio { position: relative; text-align: center; background: linear-gradient(180deg, #121423, #0c0d17); border: 1px solid #262842; border-radius: var(--raio); padding: 14px 12px 18px; overflow: hidden; }
+    .misterio::before { content: ""; position: absolute; inset: auto 10% 40% 10%; height: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--el) 35%, transparent), transparent 70%); filter: blur(10px); opacity: .55; transition: opacity .3s; }
+    .misterio:hover::before { opacity: 1; }
+    .sil { position: relative; }
+    .sil img { width: 100%; height: auto; aspect-ratio: 224/300; object-fit: contain; animation: flutua 5s ease-in-out infinite; }
+    .misterio:nth-child(2n) .sil img { animation-delay: -2.5s; }
+    .misterio b { display: block; font: 30px "Lilita One", sans-serif; letter-spacing: 4px; color: var(--el); text-shadow: 0 0 18px var(--el); margin-top: 4px; }
+    .misterio .chip { display: inline-block; font-size: 12px; font-weight: 800; padding: 3px 10px; border-radius: 99px; color: var(--el); border: 1px solid color-mix(in srgb, var(--el) 50%, transparent); background: color-mix(in srgb, var(--el) 10%, transparent); }
+    .misterio p { margin: 10px 0 0; font-size: 14px; color: var(--suave); line-height: 1.45; }
+    .aviso-misterio { margin: 28px auto 0; text-align: center; color: var(--apagado); font-size: 14px; }
+
+    /* o que vem aí */
+    .trilha { list-style: none; margin: 36px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .etapa { background: var(--card); border: 1px solid var(--linha); border-radius: var(--raio); padding: 22px; }
+    .etapa h3 { font-size: 22px; display: flex; align-items: center; gap: 10px; }
+    .etapa h3 i { font-style: normal; font-size: 12px; font-family: Nunito, sans-serif; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 3px 10px; border-radius: 99px; }
+    .etapa.ja h3 i { background: #3ddc8422; color: #3ddc84; }
+    .etapa.fazendo h3 i { background: #f5a62322; color: var(--ouro2); }
+    .etapa.depois h3 i { background: #b07cff22; color: #c9a6ff; }
+    .etapa ul { margin: 14px 0 0; padding-left: 20px; color: var(--suave); }
+    .etapa li { margin: 6px 0; }
+    .etapa li b { color: var(--texto); }
+
+    /* chamada final */
+    .chamada { text-align: center; background: linear-gradient(180deg, var(--bg), #1a1208 60%, var(--bg)); }
+    .chamada .botoes { justify-content: center; margin-top: 28px; }
+    .estudio { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 40px 16px 32px; border-top: 1px solid var(--linha); color: var(--apagado); font-size: 14px; text-align: center; }
+    .estudio img { height: 80px; width: auto; }
+    .estudio nav { position: static; background: none; padding: 0; }
+    .estudio .links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 18px; }
+
+    /* animações */
+    @keyframes pulso { 70% { box-shadow: 0 0 0 10px rgba(61,220,132,0); } 100% { box-shadow: 0 0 0 0 rgba(61,220,132,0); } }
+    @keyframes flutua { 50% { transform: translateY(-8px); } }
+    .js .surge { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
+    .js .surge.visto { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .js .surge { opacity: 1; transform: none; }
+    }
+
+    /* telas menores */
+    @media (max-width: 960px) {
+      .comps { grid-template-columns: repeat(4, 1fr); }
+      .herois { grid-template-columns: repeat(3, 1fr); }
+      .pets { grid-template-columns: repeat(3, 1fr); }
+      .numeros { grid-template-columns: repeat(3, 1fr); }
+      .trilha, .pilares { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 760px) {
+      nav ul { display: none; }
+      section { padding: 56px 0; }
+      .hero { padding-top: 72px; }
+      .hero .wrap { grid-template-columns: 1fr; text-align: center; gap: 36px; }
+      .hero p.historia { margin-left: auto; margin-right: auto; }
+      .botoes { justify-content: center; }
+      .poster { width: min(300px, 82%); }
+      .comps { grid-template-columns: repeat(2, 1fr); }
+      .herois, .pets { grid-template-columns: repeat(2, 1fr); }
+      .herois .misterio:last-child { grid-column: 1 / -1; max-width: 50%; justify-self: center; }
+      .skins { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
 <body>
-<main>
-  <img class="logo" src="img/lvr-games.png" alt="LVR Games">
-  <p class="intro">Estúdio independente de jogos para celular, criado no Brasil por Lisberto Verdó Evaristo Ribeiro.</p>
-  <section class="jogo">
-    <img src="img/sentinela.png" alt="Ícone do Sentinela">
+<nav aria-label="Principal">
+  <a href="#topo"><img src="img/logo-lvr.webp" alt="LVR Games" width="60" height="34"></a>
+  <ul>
+    <li><a href="#jogo">O jogo</a></li>
+    <li><a href="#skins">Skins</a></li>
+    <li><a href="#herois">Novos heróis</a></li>
+    <li><a href="#futuro">O que vem aí</a></li>
+  </ul>
+</nav>
+
+<header class="hero" id="topo">
+  <div class="wrap">
     <div>
-      <h2>Sentinela: Defesa da Torre</h2>
-      <p>Defenda a última torre do reino. A arqueira atira sozinha e você decide como ela fica mais forte:
-      evolua atributos, invoque cartas com gemas ganhas jogando e vença os chefes de cada capítulo.</p>
-      <span class="selo">Em breve no Google Play</span>
-      <div class="links">
-        <a href="sentinela/privacidade.html">Política de Privacidade</a>
-        <a href="sentinela/termos.html">Termos de Uso</a>
+      <h1 class="logo-jogo ouro">SENTINELA</h1>
+      <p class="slogan">Defenda a última torre</p>
+      <p class="historia">O reino de Vel caiu em silêncio. Só uma velha torre de pedra ainda resiste, e no alto dela, uma arqueira.
+      <em>Mas ela não vai lutar sozinha por muito tempo.</em></p>
+      <div class="botoes">
+        <a class="btn btn-ouro" href="mailto:lisberto.jogos@gmail.com?subject=Quero%20testar%20o%20Sentinela&amp;body=Oi!%20Quero%20entrar%20no%20teste%20do%20Sentinela%20antes%20do%20lan%C3%A7amento.%0A%0AE-mail%20da%20minha%20conta%20Google%20Play%3A%20%0ACelular%20(marca%20e%20modelo)%3A%20%0A">🏹 Quero jogar antes</a>
+        <a class="btn btn-linha" href="#herois">Quem está chegando?</a>
+      </div>
+      <div class="selo"><i></i> Em teste · em breve no Google Play</div>
+    </div>
+    <div class="poster surge">
+      <img src="img/topo.webp" alt="A Arqueira no alto da torre, cercada pelas silhuetas de cinco novos heróis" width="380" height="681" fetchpriority="high">
+    </div>
+  </div>
+</header>
+
+<main>
+  <section id="jogo">
+    <div class="wrap">
+      <div class="centro surge">
+        <span class="kicker">O jogo</span>
+        <h2 class="titulo">Ela atira. <span class="ouro">Você decide como ela fica mais forte.</span></h2>
+        <p class="lead">Sentinela é defesa idle em 3D para celular: ondas de monstros chegam de todos os lados, a arqueira derruba um por um, e cada escolha sua deixa a torre mais difícil de cair.</p>
+      </div>
+      <ul class="numeros surge" style="margin-top:36px"><li><b>5</b><span>mundos</span></li><li><b>∞</b><span>capítulos</span></li><li><b>7</b><span>companheiros</span></li><li><b>7</b><span>habilidades</span></li><li><b>12</b><span>skins</span></li><li><b>5</b><span>elementos</span></li></ul>
+      <div class="pilares">
+        <div class="pilar surge"><div class="ico">🏹</div><h3>Defenda e evolua</h3><p>Gaste moedas em ataque, velocidade, crítico e vida. Encha a barra de abates e enfrente o chefe de cada capítulo.</p></div>
+        <div class="pilar surge"><div class="ico">🌀</div><h3>Cartas e equipamento</h3><p>Invoque cartas no Portal com gemas ganhas jogando. Arcos, armaduras, habilidades e companheiros que evoluem até Arcano.</p></div>
+        <div class="pilar surge"><div class="ico">💠</div><h3>Progresso que fica</h3><p>Talentos permanentes, masmorras diárias e o Renascer: volte do começo mais forte e vá ainda mais longe.</p></div>
+      </div>
+      <div class="telas surge" aria-label="Telas do jogo">
+        <figure><img src="img/tela-batalha.webp" alt="Tela de batalha" width="230" height="409" loading="lazy"><figcaption>Batalha</figcaption></figure>
+        <figure><img src="img/tela-chefe.webp" alt="Luta contra o chefe" width="230" height="409" loading="lazy"><figcaption>Chefes</figcaption></figure>
+        <figure><img src="img/tela-cartas.webp" alt="Tela de cartas" width="230" height="409" loading="lazy"><figcaption>Cartas</figcaption></figure>
+        <figure><img src="img/tela-portal.webp" alt="Portal de invocação" width="230" height="409" loading="lazy"><figcaption>Portal</figcaption></figure>
+      </div>
+      <p class="aviso-misterio">Joga offline · compras opcionais, nenhuma compra sorteio: invocações saem só de gemas ganhas jogando.</p>
+    </div>
+  </section>
+
+  <section id="companheiros" style="background:var(--bg2)">
+    <div class="wrap">
+      <div class="centro surge">
+        <span class="kicker">Já no jogo</span>
+        <h2 class="titulo">Companheiros que <span class="ouro">lutam ao seu lado</span></h2>
+        <p class="lead">Do Corvo Batedor ao Dragãozinho Astral: cada companheiro ataca sozinho com o próprio elemento e fica mais forte a cada raridade.</p>
+      </div>
+      <ul class="grade comps surge">
+      <li class="comp" style="--r:#b8bec4">
+        <img src="img/comp-c_corvo.webp" alt="Corvo Batedor" width="160" height="160" loading="lazy">
+        <b>Corvo Batedor</b><span>Comum · Neutro</span>
+      </li>
+      <li class="comp" style="--r:#5fd35f">
+        <img src="img/comp-c_fada.webp" alt="Fada Lume" width="160" height="160" loading="lazy">
+        <b>Fada Lume</b><span>Incomum · Vento</span>
+      </li>
+      <li class="comp" style="--r:#4aa3ff">
+        <img src="img/comp-c_coruja.webp" alt="Coruja Arcana" width="160" height="160" loading="lazy">
+        <b>Coruja Arcana</b><span>Raro · Neutro</span>
+      </li>
+      <li class="comp" style="--r:#b45cff">
+        <img src="img/comp-c_golem.webp" alt="Golem de Musgo" width="160" height="160" loading="lazy">
+        <b>Golem de Musgo</b><span>Épico · Terra</span>
+      </li>
+      <li class="comp" style="--r:#ffb02e">
+        <img src="img/comp-c_salamandra.webp" alt="Salamandra" width="160" height="160" loading="lazy">
+        <b>Salamandra</b><span>Lendário · Fogo</span>
+      </li>
+      <li class="comp" style="--r:#ff4d6d">
+        <img src="img/comp-c_grifo.webp" alt="Grifo Jovem" width="160" height="160" loading="lazy">
+        <b>Grifo Jovem</b><span>Mítico · Vento</span>
+      </li>
+      <li class="comp" style="--r:#3ff0e0">
+        <img src="img/comp-c_dragao.webp" alt="Dragãozinho Astral" width="160" height="160" loading="lazy">
+        <b>Dragãozinho Astral</b><span>Arcano · Gelo</span>
+      </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="skins">
+    <div class="wrap">
+      <div class="centro surge">
+        <span class="kicker">Skins a caminho</span>
+        <h2 class="titulo">Um guarda-roupa <span class="ouro">digno de lenda</span></h2>
+        <p class="lead">Cada skin troca o visual inteiro da Arqueira e dá bônus de verdade. Ter a coleção soma ATK e Vida, mesmo sem vestir. Os modelos em 3D estão sendo feitos agora.</p>
+      </div>
+      <ul class="grade skins surge">
+      <li class="skin" style="--r:#5fd35f">
+        <div class="skin-img"><img src="img/skin-sk_patrulha.webp" alt="Skin Patrulheira" width="216" height="288" loading="lazy"><em>Em breve</em></div>
+        <b>Patrulheira</b><span class="rar">Incomum</span>
+        <small>Chefe do capítulo 15</small>
+      </li>
+      <li class="skin" style="--r:#4aa3ff">
+        <div class="skin-img"><img src="img/skin-sk_aurora.webp" alt="Skin Vigia da Aurora" width="216" height="288" loading="lazy"><em>Em breve</em></div>
+        <b>Vigia da Aurora</b><span class="rar">Raro</span>
+        <small>25 missões diárias</small>
+      </li>
+      <li class="skin" style="--r:#4aa3ff">
+        <div class="skin-img"><img src="img/skin-sk_batedora.webp" alt="Skin Arqueira Corsária" width="216" height="288" loading="lazy"><em>Em breve</em></div>
+        <b>Arqueira Corsária</b><span class="rar">Raro</span>
+        <small>Passe, nível 20 (grátis)</small>
+      </li>
+      <li class="skin" style="--r:#ffb02e">
+        <div class="skin-img"><img src="img/skin-sk_brasa.webp" alt="Skin Arqueira da Brasa" width="216" height="288" loading="lazy"><em>Em breve</em></div>
+        <b>Arqueira da Brasa</b><span class="rar">Lendário</span>
+        <small>Fragmentos do Portal</small>
+      </li>
+      <li class="skin" style="--r:#ffb02e">
+        <div class="skin-img"><img src="img/skin-sk_geada.webp" alt="Skin Arqueira da Neve" width="216" height="288" loading="lazy"><em>Em breve</em></div>
+        <b>Arqueira da Neve</b><span class="rar">Lendário</span>
+        <small>Fragmentos do Portal</small>
+      </li>
+      <li class="skin" style="--r:#ffb02e">
+        <div class="skin-img"><img src="img/skin-sk_vendaval.webp" alt="Skin Arqueira do Vendaval" width="216" height="288" loading="lazy"><em>Em breve</em></div>
+        <b>Arqueira do Vendaval</b><span class="rar">Lendário</span>
+        <small>Fragmentos do Portal</small>
+      </li>
+      <li class="skin" style="--r:#ffb02e">
+        <div class="skin-img"><img src="img/skin-sk_rocha.webp" alt="Skin Arqueira da Rocha" width="216" height="288" loading="lazy"><em>Em breve</em></div>
+        <b>Arqueira da Rocha</b><span class="rar">Lendário</span>
+        <small>Fragmentos do Portal</small>
+      </li>
+      <li class="skin" style="--r:#ffb02e">
+        <div class="skin-img"><img src="img/skin-sk_fenix.webp" alt="Skin Arqueira Fênix" width="216" height="288" loading="lazy"><em>Em breve</em></div>
+        <b>Arqueira Fênix</b><span class="rar">Lendário</span>
+        <small>Loja</small>
+      </li>
+      <li class="skin" style="--r:#ffb02e">
+        <div class="skin-img"><img src="img/skin-sk_lua.webp" alt="Skin Arqueira da Lua" width="216" height="288" loading="lazy"><em>Em breve</em></div>
+        <b>Arqueira da Lua</b><span class="rar">Lendário</span>
+        <small>Loja</small>
+      </li>
+      <li class="skin" style="--r:#ffb02e">
+        <div class="skin-img"><img src="img/skin-sk_noiva.webp" alt="Skin Arqueira Noiva" width="216" height="288" loading="lazy"><em>Em breve</em></div>
+        <b>Arqueira Noiva</b><span class="rar">Lendário</span>
+        <small>Loja</small>
+      </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="herois" class="secao-misterio">
+    <div class="wrap">
+      <div class="centro surge">
+        <span class="kicker">Em breve</span>
+        <h2 class="titulo">A Arqueira <span class="ouro">não estará sozinha</span></h2>
+        <p class="lead">Cinco novos heróis estão a caminho da torre, um de cada canto de Vel, cada um com a própria história. Por enquanto, só dá para ver a sombra deles.</p>
+      </div>
+      <ul class="grade herois">
+      <li class="misterio" style="--el:#ff7a2e">
+        <div class="sil"><img src="img/silhueta-hero_kael.webp" alt="Silhueta de um herói ainda secreto" width="224" height="300" loading="lazy"></div>
+        <b>???</b>
+        <span class="chip">Fogo · Lança</span>
+        <p>Viu a vila virar cinza e jurou que nenhuma outra torre vai cair.</p>
+      </li>
+      <li class="misterio" style="--el:#7fd3ff">
+        <div class="sil"><img src="img/silhueta-hero_mira.webp" alt="Silhueta de um herói ainda secreto" width="224" height="300" loading="lazy"></div>
+        <b>???</b>
+        <span class="chip">Gelo · Cajado</span>
+        <p>Um prodígio orgulhoso que procura o mestre perdido no gelo.</p>
+      </li>
+      <li class="misterio" style="--el:#3fe0c8">
+        <div class="sil"><img src="img/silhueta-hero_ren.webp" alt="Silhueta de um herói ainda secreto" width="224" height="300" loading="lazy"></div>
+        <b>???</b>
+        <span class="chip">Vento · Espada</span>
+        <p>Quebrou um juramento. Cada batalha é uma chance de se redimir.</p>
+      </li>
+      <li class="misterio" style="--el:#8fd16a">
+        <div class="sil"><img src="img/silhueta-hero_tora.webp" alt="Silhueta de um herói ainda secreto" width="224" height="300" loading="lazy"></div>
+        <b>???</b>
+        <span class="chip">Terra · Punhos de pedra</span>
+        <p>Um gigante gentil em voto de silêncio. Só fala quando a montanha treme.</p>
+      </li>
+      <li class="misterio" style="--el:#b07cff">
+        <div class="sil"><img src="img/silhueta-hero_sombra.webp" alt="Silhueta de um herói ainda secreto" width="224" height="300" loading="lazy"></div>
+        <b>???</b>
+        <span class="chip">??? · ???</span>
+        <p>Ninguém sabe quem é. Talvez saiba por que Vel caiu em silêncio.</p>
+      </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="pets" class="secao-misterio" style="padding-top:24px">
+    <div class="wrap">
+      <div class="centro surge">
+        <span class="kicker">Novos companheiros</span>
+        <h2 class="titulo">Lendas de todas as <span class="ouro">mitologias</span></h2>
+        <p class="lead">Criaturas que o mundo inteiro conhece, em versão filhote e prontas para defender a torre.</p>
+      </div>
+      <ul class="grade pets">
+      <li class="misterio pet" style="--el:#ff9a3c">
+        <div class="sil"><img src="img/silhueta-pet_kitsune.webp" alt="Silhueta de um companheiro ainda secreto" width="224" height="300" loading="lazy"></div>
+        <b>???</b>
+        <span class="chip">Mitologia japonesa</span>
+        <p>Nove caudas, nove chamas.</p>
+      </li>
+      <li class="misterio pet" style="--el:#8fd8ff">
+        <div class="sil"><img src="img/silhueta-pet_fenrir.webp" alt="Silhueta de um companheiro ainda secreto" width="224" height="300" loading="lazy"></div>
+        <b>???</b>
+        <span class="chip">Mitologia nórdica</span>
+        <p>Ainda filhote. A corrente já não segura.</p>
+      </li>
+      <li class="misterio pet" style="--el:#ffb02e">
+        <div class="sil"><img src="img/silhueta-pet_boitata.webp" alt="Silhueta de um companheiro ainda secreto" width="224" height="300" loading="lazy"></div>
+        <b>???</b>
+        <span class="chip">Folclore brasileiro</span>
+        <p>Guardiã dos campos, feita de fogo vivo.</p>
+      </li>
+      <li class="misterio pet" style="--el:#cfe6ff">
+        <div class="sil"><img src="img/silhueta-pet_pegaso.webp" alt="Silhueta de um companheiro ainda secreto" width="224" height="300" loading="lazy"></div>
+        <b>???</b>
+        <span class="chip">Mitologia grega</span>
+        <p>Nasceu para voar acima das nuvens.</p>
+      </li>
+      <li class="misterio pet" style="--el:#5fe0a0">
+        <div class="sil"><img src="img/silhueta-pet_kirin.webp" alt="Silhueta de um companheiro ainda secreto" width="224" height="300" loading="lazy"></div>
+        <b>???</b>
+        <span class="chip">Mitologia chinesa</span>
+        <p>Dizem que traz sorte a quem protege.</p>
+      </li>
+      <li class="misterio pet" style="--el:#ff5a3c">
+        <div class="sil"><img src="img/silhueta-pet_cerbero.webp" alt="Silhueta de um companheiro ainda secreto" width="224" height="300" loading="lazy"></div>
+        <b>???</b>
+        <span class="chip">Mitologia grega</span>
+        <p>Três cabeças, três humores, um só coração.</p>
+      </li>
+      </ul>
+      <p class="aviso-misterio">Os nomes, os poderes e a ordem de chegada serão revelados aos poucos.</p>
+    </div>
+  </section>
+
+  <section id="futuro">
+    <div class="wrap">
+      <div class="centro surge">
+        <span class="kicker">O que vem por aí</span>
+        <h2 class="titulo">Um jogo que <span class="ouro">não para de crescer</span></h2>
+      </div>
+      <ul class="trilha">
+        <li class="etapa ja surge"><h3>Já no jogo <i>pronto</i></h3><ul>
+          <li><b>5 mundos</b> com chefes de fim de mundo</li>
+          <li>Portal de cartas, talentos e masmorras</li>
+          <li>Passe da temporada com trilha grátis</li>
+          <li>Renascer e ranking no Google Play Games</li>
+        </ul></li>
+        <li class="etapa fazendo surge"><h3>Em produção <i>agora</i></h3><ul>
+          <li><b>Armadura completa</b>: elmo, peitoral, luvas e botas nos 5 elementos</li>
+          <li><b>Arcos em 3D</b> nas mãos da Arqueira</li>
+          <li><b>Skins em 3D</b>, a começar pelas da lista acima</li>
+          <li><b>Estrelas da personagem</b>, de 1★ a 7★</li>
+        </ul></li>
+        <li class="etapa depois surge"><h3>Depois <i>segredo</i></h3><ul>
+          <li><b>Novos heróis</b> jogáveis, cada um com estrelas e skins</li>
+          <li><b>Pets das mitologias</b></li>
+          <li>A verdade sobre o silêncio de Vel</li>
+        </ul></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="chamada">
+    <div class="wrap surge">
+      <h2 class="titulo">Quer defender a torre <span class="ouro">antes de todo mundo?</span></h2>
+      <p class="lead" style="margin-left:auto;margin-right:auto">O Sentinela está em teste fechado. Mande o e-mail da sua conta Google Play e entre na lista. Quem testa vê as novidades primeiro.</p>
+      <div class="botoes">
+        <a class="btn btn-ouro" href="mailto:lisberto.jogos@gmail.com?subject=Quero%20testar%20o%20Sentinela&amp;body=Oi!%20Quero%20entrar%20no%20teste%20do%20Sentinela%20antes%20do%20lan%C3%A7amento.%0A%0AE-mail%20da%20minha%20conta%20Google%20Play%3A%20%0ACelular%20(marca%20e%20modelo)%3A%20%0A">🏹 Quero jogar antes</a>
       </div>
     </div>
   </section>
-  <p class="contato">Contato: <a href="mailto:lisberto.jogos@gmail.com">lisberto.jogos@gmail.com</a></p>
-  <footer>© 2026 LVR Games</footer>
 </main>
+
+<footer class="estudio">
+  <img src="img/logo-lvr.webp" alt="LVR Games" width="141" height="80" loading="lazy">
+  <p style="margin:0">Estúdio independente de jogos para celular, criado no Brasil por Lisberto Verdó Evaristo Ribeiro.</p>
+  <div class="links">
+    <a href="mailto:lisberto.jogos@gmail.com">lisberto.jogos@gmail.com</a>
+    <a href="sentinela/privacidade.html">Política de Privacidade</a>
+    <a href="sentinela/termos.html">Termos de Uso</a>
+  </div>
+  <p style="margin:0">© 2026 LVR Games</p>
+</footer>
+
+<script>
+  document.documentElement.classList.add('js');
+  (function () {
+    var els = document.querySelectorAll('.surge');
+    if (!('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('visto'); }); return; }
+    var io = new IntersectionObserver(function (entradas) {
+      entradas.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('visto'); io.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    els.forEach(function (e) { io.observe(e); });
+  })();
+</script>
 </body>
 </html>
