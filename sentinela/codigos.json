@@ -1,4 +1,14 @@
 {
+ "banners": [
+  {
+   "id": "SEXTOU12",
+   "title": "Sexta é dia de código!",
+   "text": "Em 4 dias o Sentinela passou de 12 testadores. Para comemorar, cada um ganha 2.000 gemas e 2.000 cristais. Resgate até 20/11.",
+   "code": "SEXTOU12",
+   "img": "assets/img/skins/sk_beta-corpo.jpg",
+   "until": "2026-11-20"
+  }
+ ],
  "codes": [
   {
    "hb": "e258ea9d7de54a4b02a8562a3b9264a011df61ff7c49b977358f19cdc99d5540",
