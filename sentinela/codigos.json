@@ -15,6 +15,14 @@
    "code": "ALPHAFINAL",
    "img": "assets/img/skins/sk_beta-corpo.jpg",
    "until": "2026-11-30"
+  },
+  {
+   "id": "BETAVEM",
+   "title": "O Beta Aberto vem aí!",
+   "text": "Em breve o Sentinela abre o Beta para todo mundo, e na quarta-feira (25/11) tem novidade. Para esquentar, cada jogador ganha 10.000 gemas e 10.000 cristais. Resgate até 29/11.",
+   "code": "BETAVEM",
+   "img": "assets/img/skins/sk_beta-corpo.jpg",
+   "until": "2026-11-29"
   }
  ],
  "codes": [
@@ -56,6 +64,15 @@
    },
    "until": "2026-11-30",
    "title": "Reta final do Alpha: obrigado por testar o Sentinela!"
+  },
+  {
+   "h": "effff00bcfa7b6f9891100379e7676fbc4a490793009477f0b8558b1b4a9d800",
+   "grant": {
+    "gems": 10000,
+    "crystals": 10000
+   },
+   "until": "2026-11-29",
+   "title": "O Beta Aberto vem aí! Quarta-feira tem novidade."
   }
  ]
 }
