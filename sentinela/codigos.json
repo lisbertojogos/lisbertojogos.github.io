@@ -1,3 +1,18 @@
 {
- "codes": []
+ "codes": [
+  {
+   "hb": "e6c3e85fde90a0a85f3c1a00cdd8dd218c97f2017afe2fbcd91b887f7d1c8931",
+   "b": 37,
+   "grant": {
+    "skins": [
+     "sk_rocha",
+     "sk_beta"
+    ],
+    "gems": 10000,
+    "crystals": 10000
+   },
+   "until": "2026-12-31",
+   "title": "Obrigado por testar o Sentinela!"
+  }
+ ]
 }
