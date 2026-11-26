@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Sentinela: Defesa da Torre no Google Play</title>
+<link rel="icon" href="../img/sentinela.png">
+<noscript><meta http-equiv="refresh" content="0;url=https://play.google.com/store/apps/details?id=com.lvrgames.sentinela"></noscript>
+<style>
+  html,body{height:100%;margin:0}
+  body{display:flex;align-items:center;justify-content:center;padding:24px;box-sizing:border-box;
+       background:#12131c;color:#f3efe6;font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;text-align:center}
+  img{width:96px;height:96px;border-radius:22px}
+  h1{font-size:20px;margin:16px 0 4px}
+  p{margin:0 0 20px;color:#c9c3b6}
+  a{display:inline-block;padding:14px 24px;border-radius:999px;background:#f5b53d;color:#1b1406;font-weight:700;text-decoration:none}
+</style>
+</head>
+<body>
+<main>
+  <img src="../img/sentinela.png" alt="" width="96" height="96" onerror="this.remove()">
+  <h1>Sentinela: Defesa da Torre</h1>
+  <p>Abrindo o Google Play…</p>
+  <a id="ir" href="https://play.google.com/store/apps/details?id=com.lvrgames.sentinela">▶ Abrir no Google Play</a>
+</main>
+<script>
+  // Atalho para a página do jogo na Play: lisbertojogos.github.io/play
+  // Existe porque o Instagram para Android não abre link da bio que vai direto para play.google.com (testado em 26/11/2026).
+  // Leva a origem da visita como "referrer" (o Instagram acrescenta ?utm_source=ig&utm_content=link_in_bio; ?de=tiktok também vale).
+  (function () {
+    var ir = document.getElementById('ir');
+    try {
+      var q = new URLSearchParams(location.search);
+      var limpa = function (v) { return String(v || '').toLowerCase().replace(/[^a-z0-9_-]/g, '').slice(0, 30); };
+      var apelidos = { ig: 'instagram', fb: 'facebook', yt: 'youtube' };
+      var origem = limpa(q.get('utm_source') || q.get('de'));
+      origem = apelidos[origem] || origem || 'site';
+      var campanha = limpa(q.get('utm_campaign')) || (q.get('utm_content') === 'link_in_bio' ? 'bio' : 'atalho');
+      var u = new URL(ir.href);
+      u.searchParams.set('referrer', 'utm_source=' + origem + '&utm_campaign=' + campanha);
+      ir.href = u.toString();
+    } catch (e) { /* navegador antigo: segue sem a origem */ }
+    location.replace(ir.href);
+  })();
+</script>
+</body>
+</html>
