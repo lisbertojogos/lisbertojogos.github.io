@@ -478,6 +478,24 @@
     }, { rootMargin: '0px 0px -8% 0px' });
     els.forEach(function (e) { io.observe(e); });
   })();
+  // Passa a origem da visita para os botões da Play, como "referrer", para o Play Console separar de onde veio a instalação.
+  // O Instagram acrescenta sozinho ?utm_source=ig&utm_content=link_in_bio ao link da bio; ?de=tiktok também vale.
+  (function () {
+    try {
+      var q = new URLSearchParams(location.search);
+      var limpa = function (v) { return String(v || '').toLowerCase().replace(/[^a-z0-9_-]/g, '').slice(0, 30); };
+      var apelidos = { ig: 'instagram', fb: 'facebook', yt: 'youtube' };
+      var origem = limpa(q.get('utm_source') || q.get('de'));
+      origem = apelidos[origem] || origem || 'site';
+      var campanha = limpa(q.get('utm_campaign')) || (q.get('utm_content') === 'link_in_bio' ? 'bio' : 'site');
+      var ref = 'utm_source=' + origem + '&utm_campaign=' + campanha;
+      document.querySelectorAll('a[href^="https://play.google.com/store/apps/details"]').forEach(function (a) {
+        var u = new URL(a.href);
+        u.searchParams.set('referrer', ref);
+        a.href = u.toString();
+      });
+    } catch (e) { /* navegador antigo: o botão segue para a Play sem a origem */ }
+  })();
 </script>
 </body>
 </html>
