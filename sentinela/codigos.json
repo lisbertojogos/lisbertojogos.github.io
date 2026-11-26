@@ -1,4 +1,13 @@
 {
+ "banners": [
+  {
+   "id": "REDESCODIGO",
+   "title": "Tem presente nas redes!",
+   "text": "Os códigos de presente saem primeiro no Instagram @sentinela.jogo. Tem um valendo agora, até 31/12.",
+   "from": "2026-11-27",
+   "until": "2026-12-31"
+  }
+ ],
  "codes": [
   {
    "hb": "e6c3e85fde90a0a85f3c1a00cdd8dd218c97f2017afe2fbcd91b887f7d1c8931",
@@ -13,6 +22,15 @@
    },
    "until": "2026-12-31",
    "title": "Obrigado por testar o Sentinela!"
+  },
+  {
+   "h": "a7bf26396fccd202bde3e3dff0f8d0ef480c101a2d3da9bdad96bbc9ae538b7b",
+   "grant": {
+    "gems": 300,
+    "tickets": 3
+   },
+   "until": "2026-12-31",
+   "title": "Presente das redes do Sentinela!"
   }
  ]
 }
